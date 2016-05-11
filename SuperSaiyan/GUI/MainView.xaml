@@ -6,10 +6,21 @@
              xmlns:ut="clr-namespace:SuperSaiyan.GUI"
              mc:Ignorable="d" Foreground="{DynamicResource TextBrush}" Background="#434343"
              MinHeight="650" MinWidth="550">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Dictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <TabControl>
             <TabItem Header="Combat Settings" Foreground="{DynamicResource TextBrush}">
-                <Grid />
+                <Border Tag="CombatSettings/Base.xaml"/>
             </TabItem>
         </TabControl>
 

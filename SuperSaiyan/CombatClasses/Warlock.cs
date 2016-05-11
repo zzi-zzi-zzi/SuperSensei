@@ -2,12 +2,9 @@
 using Buddy.BladeAndSoul.Game.DataTables;
 using Buddy.Coroutines;
 using log4net;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using CombatUitils = SuperSaiyan.Utils.Combat;
 
 namespace SuperSaiyan.CombatClasses
@@ -55,11 +52,8 @@ namespace SuperSaiyan.CombatClasses
         public async Task Combat()
         {
             //todo: is this channeled? & are we still hitting the target.
-            if (await CombatUitils.ExecuteSkill("Dragon Helix", Keys.D4) || await CombatUitils.ExecuteSkill("Dragoncall", Keys.D4))
+            if (await CombatUitils.ExecuteSkill("Dragon Helix") || await CombatUitils.ExecuteSkill("Dragoncall"))
             {
-                //dragon call is a casted ability. wait for it to end.
-                while (GameManager.LocalPlayer.IsCasting)
-                    await Coroutine.Sleep(100);
                 return;
             } else { //debug Dragon Helix
                 try
@@ -96,32 +90,32 @@ namespace SuperSaiyan.CombatClasses
                 catch { }
             }
 
-            if (await CombatUitils.ExecuteSkill("Wingstorm", Keys.V))
+            if (await CombatUitils.ExecuteSkill("Wingstorm"))
             {
                 return;
             }
             
-            if (await CombatUitils.ExecuteSkill("Awakened Rupture", Keys.F) || await CombatUitils.ExecuteSkill("Rupture", Keys.F))
+            if (await CombatUitils.ExecuteSkill("Awakened Rupture") || await CombatUitils.ExecuteSkill("Rupture"))
             {
                 return;
             }
             //if we have leech make sure it's not on cooldown before casting soulshackle 
             var leech = GameManager.LocalPlayer.GetSkillByName("Leech");
             if (
-                (leech != null && !GameManager.LocalPlayer.IsSkillOnCooldown("Leech") && await CombatUitils.ExecuteSkill("Soul Shackle", Keys.D2))
-                || await CombatUitils.ExecuteSkill("Soul Shackle", Keys.D2)
+                (leech != null && !GameManager.LocalPlayer.IsSkillOnCooldown("Leech") && await CombatUitils.ExecuteSkill("Soul Shackle"))
+                || await CombatUitils.ExecuteSkill("Soul Shackle")
                )
             {
                 return;
             }
 
-            if (await CombatUitils.ExecuteSkill(leech, Keys.F))
+            if (await CombatUitils.ExecuteSkill(leech))
             {
                 return;
             }
             var center = GameManager.LocalPlayer.CurrentTarget.Position; //should be close within 100ms
             var imprison = GameManager.LocalPlayer.GetSkillByName("Imprison");
-            if (await CombatUitils.ExecuteSkill(imprison, Keys.D3))
+            if (await CombatUitils.ExecuteSkill(imprison))
             {
                 while (GameManager.LocalPlayer.IsCasting)
                 {
@@ -133,7 +127,7 @@ namespace SuperSaiyan.CombatClasses
                 }
                 return;
             }
-            if (await CombatUitils.ExecuteSkill("Dimensional Volley", Keys.T) || await CombatUitils.ExecuteSkill("Bombardment", Keys.T))
+            if (await CombatUitils.ExecuteSkill("Dimensional Volley") || await CombatUitils.ExecuteSkill("Bombardment"))
             {
                 return;
             }
@@ -142,9 +136,9 @@ namespace SuperSaiyan.CombatClasses
 
         async Task DefaultSkill()
         {
-            if (await CombatUitils.ExecuteSkill("Incantation", Keys.R) ||
-                await CombatUitils.ExecuteSkill("Burst", Keys.R) ||
-                await CombatUitils.ExecuteSkill("Mantra", Keys.R)
+            if (await CombatUitils.ExecuteSkill("Incantation") ||
+                await CombatUitils.ExecuteSkill("Burst") ||
+                await CombatUitils.ExecuteSkill("Mantra")
                 )
                 return;
         }

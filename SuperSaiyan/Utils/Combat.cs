@@ -5,7 +5,6 @@ using Buddy.Coroutines;
 using log4net;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SuperSaiyan.Utils
 {
@@ -13,7 +12,7 @@ namespace SuperSaiyan.Utils
     {
         private static ILog Log = LogManager.GetLogger("[Super Saiyan - Combat]");
 
-        internal static async Task<bool> ExecuteSkill(string skillName, Keys hotkey)
+        internal static async Task<bool> ExecuteSkill(string skillName)
         {
             var skill = GameManager.LocalPlayer.GetSkillByName(skillName);
             if (skill == null)
@@ -21,11 +20,11 @@ namespace SuperSaiyan.Utils
                 return false;
             }
 
-            return await ExecuteSkill(skill, hotkey);
+            return await ExecuteSkill(skill);
             
         }
 
-        internal static async Task<bool> ExecuteSkill(Skill skill, Keys hotkey)
+        internal static async Task<bool> ExecuteSkill(Skill skill)
         {
             if (skill == null)
                 return false;
@@ -36,8 +35,8 @@ namespace SuperSaiyan.Utils
             if (castResult > SkillUseError.None)
                 return false;
 
-            Log.InfoFormat("Casting {0} on key {1}", skill.Name, hotkey);
-            InputManager.PressKey(hotkey);
+            Log.InfoFormat("Casting {0}", skill.Name);
+            skill.Cast();
             await Coroutine.Sleep(100);
             return true;
         }

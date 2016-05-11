@@ -18,8 +18,9 @@ using System.Windows.Forms;
 using System.Windows.Markup;
 using UserControl = System.Windows.Controls.UserControl;
 using Application = System.Windows.Application;
-using Buddy.BladeAndSoul;
 using Buddy.BladeAndSoul.ViewModels;
+using SuperSaiyan.Settings;
+using SuperSaiyan.GUI.Components;
 
 namespace SuperSaiyan
 {
@@ -110,17 +111,6 @@ namespace SuperSaiyan
                         Height = 650,
                     };
                     _gui.Closed += WindowClosed;
-                    MainWindowViewModel.Window.Closed += (a,b)=>
-                    {
-                        //close out our configuration window
-                        _gui.Close();
-                        _gui = null;
-                    };
-                    Application.Current.Exit += (a, b) =>
-                    {
-                        _gui.Close();
-                        _gui = null;
-                    };
 
                 }
             }
@@ -138,8 +128,13 @@ namespace SuperSaiyan
             var context = _gui.DataContext as SuperSettings;
             if(context != null)
             {
+                Log.Info("Save settings!");
                 context.Save();
+            } else
+            {
+                Log.InfoFormat("context == null");
             }
+            _gui = null;
         }
 
 
@@ -151,7 +146,7 @@ namespace SuperSaiyan
                 {
                     _windowContent = LoadAndTransformXamlFile<UserControl>(Path.Combine(uiPath, "MainView.xaml"));
                     LoadChild(_windowContent, uiPath);
-                    //LoadResourceForWindow(Path.Combine(uiPath, "Template.xaml"), _windowContent);
+                    LoadResourceForWindow(Path.Combine(uiPath, "Dictionary.xaml"), _windowContent);
                     return _windowContent;
                 }
             }
@@ -244,7 +239,7 @@ namespace SuperSaiyan
                 string filecontent = File.ReadAllText(filename);
 
                 // Change reference to custom TrinityPlugin class
-                filecontent = filecontent.Replace("xmlns:ut=\"clr-namespace:SuperSaiyan.GUI\"", "xmlns:ut=\"clr-namespace:Buddy.Common;assembly=" + Assembly.GetExecutingAssembly().GetName().Name + "\"");
+                filecontent = filecontent.Replace("xmlns:ut=\"clr-namespace:SuperSaiyan.GUI.Components\"", "xmlns:ut=\"clr-namespace:SuperSaiyan.GUI.Components;assembly=" + Assembly.GetExecutingAssembly().GetName().Name + "\"");
 
                 filecontent = Regex.Replace(filecontent, "<ResourceDictionary.MergedDictionaries>.*</ResourceDictionary.MergedDictionaries>", string.Empty, RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -254,6 +249,23 @@ namespace SuperSaiyan
             {
                 Log.ErrorFormat("Error loading/transforming XAML {0}", ex);
                 return default(T);
+            }
+        }
+
+        private void LoadResourceForWindow(string filename, UserControl control)
+        {
+            try
+            {
+                ResourceDictionary resource = LoadAndTransformXamlFile<ResourceDictionary>(filename);
+                foreach (System.Collections.DictionaryEntry res in resource)
+                {
+                    if (!control.Resources.Contains(res.Key))
+                        control.Resources.Add(res.Key, res.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.ErrorFormat("Error loading resources {0}", ex);
             }
         }
 
