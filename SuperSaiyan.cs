@@ -95,7 +95,7 @@ namespace SuperSaiyan
                     _gui = new Window
                     {
                         DataContext = new SuperSettings(),
-                        Content = WPFUtils.LoadWindowContent(Path.Combine(AppSettings.Instance.FullRoutinesPath, "SuperSaiyan", "SuperSaiyan", "GUI")),
+                        Content = WPFUtils.LoadWindowContent(Path.Combine(AppSettings.Instance.FullRoutinesPath, "SuperSaiyan", "GUI")),
                         MinHeight = 400,
                         MinWidth = 200,
                         Title = "Super Saiyan Settings",
