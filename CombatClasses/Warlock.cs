@@ -93,14 +93,14 @@ namespace SuperSaiyan.CombatClasses
                     if ((_thrallTimer - DateTime.Now).Seconds > SuperSettings.Instance.Warlock.SuperDelay)
                     {
                         var TimeWarp = GameManager.LocalPlayer.GetSkillByName("Time Distortion");
-                        if (TimeWarp != null && !IsSkillOnCooldown(TimeWarp) && !HasDebuf(new List<string> { "Inflection" }) && await ExecuteSkill(TimeWarp))
+                        if (TimeWarp != null && !IsSkillOnCooldown(TimeWarp) && !HasDebuf("Inflection") && await ExecuteSkill(TimeWarp))
                         {
                             return;
                         }
 
                         //TODO: Improve SoulBurn Logic.
                         var Soulburn = GameManager.LocalPlayer.GetSkillByName("Soulburn");
-                        if (Soulburn != null && !IsSkillOnCooldown(Soulburn) && !HasDebuf(new List<string> { "Soulburn", "Soulburn Unavailable" }) && await ExecuteSkill(Soulburn))
+                        if (Soulburn != null && !IsSkillOnCooldown(Soulburn) && !HasDebuf("Soulburn", "Soulburn Unavailable") && await ExecuteSkill(Soulburn))
                         {
                             return;
                         }

@@ -69,6 +69,9 @@ namespace SuperSaiyan
                 case PlayerClass.Warlock:
                     _combatMachine = new Warlock();
                     break;
+                case PlayerClass.Summoner:
+                    _combatMachine = new Summoner();
+                    break;
                 default:
                     Log.InfoFormat("[Super Saiyan] cannot handle class: {0} (YET!)", GameManager.LocalPlayer.Class);
                     _combatMachine = null;

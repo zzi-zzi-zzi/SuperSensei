@@ -7,6 +7,46 @@
              MinHeight="650" MinWidth="550">
     <Grid>
         <TabControl>
+            <TabItem Header="Assassin" Foreground="{DynamicResource TextBrush}">
+                <Grid>
+                    <Label Content="Nothing to configure yet!" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Blade Dancer" Foreground="{DynamicResource TextBrush}">
+                <Grid>
+                    <Label Content="Nothing to configure yet!" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Blade Master" Foreground="{DynamicResource TextBrush}">
+                <Grid>
+                    <Label Content="Nothing to configure yet!" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Destroyer" Foreground="{DynamicResource TextBrush}">
+                <Grid>
+                    <Label Content="Nothing to configure yet!" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Force Master" Foreground="{DynamicResource TextBrush}">
+                <Grid>
+                    <Label Content="Nothing to configure yet!" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Kung Fu Master" Foreground="{DynamicResource TextBrush}">
+                <Grid>
+                    <Label Content="Nothing to configure yet!" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Summoner" Foreground="{DynamicResource TextBrush}">
+                <Grid>
+                    <Label Content="Nothing to configure yet!" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Soul Fighter" Visibility="Collapsed" Foreground="{DynamicResource TextBrush}">
+                <Grid>
+                    <Label Content="Nothing to configure yet!" />
+                </Grid>
+            </TabItem>
             <TabItem Header="Warlock" Foreground="{DynamicResource TextBrush}">
                 <Border Tag="../CombatSettings/Warlock.xaml"/>
             </TabItem>
