@@ -62,7 +62,7 @@ namespace SuperSaiyan.CombatClasses
                     {
                         if (action.Target == GameManager.LocalPlayer && action.TimeLeft < TimeSpan.FromMilliseconds(250))
                         {
-                            if(await ExecuteSkill("Quell", TimeSpan.FromMilliseconds(300)))
+                            if(await ExecuteSkill("Quell"))
                                 return;
                         }
                     }
