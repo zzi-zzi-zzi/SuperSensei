@@ -10,18 +10,50 @@ namespace SuperSaiyan.Settings
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private bool _attemptRepulse;
+        private bool _attemptQuell;
+
         [DefaultValue(false)]
-        public bool AttemptRepulse
+        public bool AttemptQuell
         {
             get
             {
-                return _attemptRepulse;
+                return _attemptQuell;
             }
             set
             {
-                _attemptRepulse = value;
+                _attemptQuell = value;
                 OnPropertyChanged("AttemptRepulse");
+            }
+        }
+
+        private bool _useThrall;
+
+        [DefaultValue(true)]
+        public bool UseThrall
+        {
+            get
+            {
+                return _useThrall;
+            }
+            set
+            {
+                _useThrall = value;
+                OnPropertyChanged("UseThrall");
+            }
+        }
+
+        private int _superDelay;
+        [DefaultValue(10)]
+        public int SuperDelay
+        {
+            get
+            {
+                return _superDelay;
+            }
+            set
+            {
+                _superDelay = value;
+                OnPropertyChanged("SuperDelay");
             }
         }
 

@@ -36,6 +36,20 @@ namespace SuperSaiyan.Settings
             }
         }
 
+        //private SummonerSettings _summoner;
+        //public SummonerSettings Summoner
+        //{
+        //    get
+        //    {
+        //        return _summoner ?? (_summoner = new WarlockSettings());
+        //    }
+        //    set
+        //    {
+        //        _summoner = value;
+        //        OnPropertyChanged("Warlock");
+        //    }
+        //}
+
 
         /// <summary>
         /// Called when property changed.
@@ -50,6 +64,4 @@ namespace SuperSaiyan.Settings
         }
 
     }
-
-
 }

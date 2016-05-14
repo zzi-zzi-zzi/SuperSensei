@@ -2,10 +2,12 @@
 using Buddy.BladeAndSoul.Game.DataTables;
 using Buddy.Coroutines;
 using log4net;
+using SuperSaiyan.Settings;
+using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CombatUitils = SuperSaiyan.Utils.Combat;
+using static SuperSaiyan.Utils.Combat;
 
 namespace SuperSaiyan.CombatClasses
 {
@@ -51,8 +53,43 @@ namespace SuperSaiyan.CombatClasses
 
         public async Task Combat()
         {
+            //blocking has the highest priority.
+            if (SuperSettings.Instance.Warlock.AttemptQuell)
+            {
+                if(GameManager.LocalPlayer.CurrentTarget.CurrentTarget == GameManager.LocalPlayer && GameManager.LocalPlayer.CurrentTarget.IsCasting)
+                {
+                    foreach(var action in GameManager.LocalPlayer.CurrentTarget.CurrentActions)
+                    {
+                        if (action.Target == GameManager.LocalPlayer && action.TimeLeft < TimeSpan.FromMilliseconds(250))
+                        {
+                            if(await ExecuteSkill("Quell", TimeSpan.FromMilliseconds(300)))
+                                return;
+                        }
+                    }
+                }
+
+                //push the badguys away and lock them in place.
+                if(await ExecuteSkill("Repulse"))
+                {
+                    await ExecuteSkill("Soul Shackle");
+                    return;
+                }
+            }
+
+            if (SuperSettings.Instance.Warlock.UseThrall)
+            {
+                var Thrall = GameManager.LocalPlayer.GetSkillByName("Summon");
+                if (Thrall != null)
+                {
+                    if(!IsSkillOnCooldown(Thrall) && await ExecuteSkill(Thrall))
+                    {
+                        return;
+                    }
+                }
+            }
+
             //todo: is this channeled? & are we still hitting the target.
-            if (await CombatUitils.ExecuteSkill("Dragon Helix") || await CombatUitils.ExecuteSkill("Dragoncall"))
+            if (await ExecuteSkill("Dragon Helix") || await ExecuteSkill("Dragoncall"))
             {
                 return;
             } else { //debug Dragon Helix
@@ -90,32 +127,32 @@ namespace SuperSaiyan.CombatClasses
                 catch { }
             }
 
-            if (await CombatUitils.ExecuteSkill("Wingstorm"))
+            if (await ExecuteSkill("Wingstorm"))
             {
                 return;
             }
             
-            if (await CombatUitils.ExecuteSkill("Awakened Rupture") || await CombatUitils.ExecuteSkill("Rupture"))
+            if (await ExecuteSkill("Awakened Rupture") || await ExecuteSkill("Rupture"))
             {
                 return;
             }
             //if we have leech make sure it's not on cooldown before casting soulshackle 
             var leech = GameManager.LocalPlayer.GetSkillByName("Leech");
             if (
-                (leech != null && !GameManager.LocalPlayer.IsSkillOnCooldown("Leech") && await CombatUitils.ExecuteSkill("Soul Shackle"))
-                || await CombatUitils.ExecuteSkill("Soul Shackle")
+                (leech != null && !IsSkillOnCooldown(leech) && await ExecuteSkill("Soul Shackle"))
+                || await ExecuteSkill("Soul Shackle")
                )
             {
                 return;
             }
 
-            if (await CombatUitils.ExecuteSkill(leech))
+            if (await ExecuteSkill(leech))
             {
                 return;
             }
             var center = GameManager.LocalPlayer.CurrentTarget.Position; //should be close within 100ms
             var imprison = GameManager.LocalPlayer.GetSkillByName("Imprison");
-            if (await CombatUitils.ExecuteSkill(imprison))
+            if (await ExecuteSkill(imprison))
             {
                 while (GameManager.LocalPlayer.IsCasting)
                 {
@@ -127,7 +164,7 @@ namespace SuperSaiyan.CombatClasses
                 }
                 return;
             }
-            if (await CombatUitils.ExecuteSkill("Dimensional Volley") || await CombatUitils.ExecuteSkill("Bombardment"))
+            if (await ExecuteSkill("Dimensional Volley") || await ExecuteSkill("Bombardment"))
             {
                 return;
             }
@@ -136,9 +173,9 @@ namespace SuperSaiyan.CombatClasses
 
         async Task DefaultSkill()
         {
-            if (await CombatUitils.ExecuteSkill("Incantation") ||
-                await CombatUitils.ExecuteSkill("Burst") ||
-                await CombatUitils.ExecuteSkill("Mantra")
+            if (await ExecuteSkill("Incantation") ||
+                await ExecuteSkill("Burst") ||
+                await ExecuteSkill("Mantra")
                 )
                 return;
         }

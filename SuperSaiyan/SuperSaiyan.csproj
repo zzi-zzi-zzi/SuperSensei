@@ -62,7 +62,6 @@
     <Compile Include="GUI\Components\BoolToValueConverter.cs" />
     <Compile Include="GUI\Components\SettingsComponent.cs" />
     <Compile Include="ICombatHandler.cs" />
-    <Compile Include="Settings\ISuperSettings.cs" />
     <Compile Include="Settings\SuperSettings.cs" />
     <Compile Include="Settings\WarlockSettings.cs" />
     <Compile Include="SuperSaiyan.cs" />
