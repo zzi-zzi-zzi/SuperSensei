@@ -8,7 +8,7 @@
     <Grid>
         <TabControl>
             <TabItem Header="Warlock" Foreground="{DynamicResource TextBrush}">
-                <Border Tag="CombatSettings/Warlock.xaml"/>
+                <Border Tag="../CombatSettings/Warlock.xaml"/>
             </TabItem>
         </TabControl>
     </Grid>

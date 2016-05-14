@@ -7,13 +7,14 @@
              mc:Ignorable="d" Foreground="{DynamicResource TextBrush}" Background="#434343"
              MinHeight="650" MinWidth="550">
     <Grid>
-        <CheckBox x:Name="AttemptQuell" Content="Attempt to use Quell (only blocks actions from our target)" IsChecked="{Binding Warlock.AttemptQuell}" HorizontalAlignment="Left" Margin="4,4,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="UseThrall" Content="Use thrall in Combat" IsChecked="{Binding Warlock.UseThrall}" HorizontalAlignment="Left" Margin="4,24,0,0" VerticalAlignment="Top"
+        <CheckBox x:Name="AttemptQuell" Content="Attempt to use Quell &amp; Repulse (only blocks actions from our target)" IsChecked="{Binding Warlock.AttemptQuell}" HorizontalAlignment="Left" Margin="4,4,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="UseThrall" Content="Use Thrall" IsChecked="{Binding Warlock.UseThrall}" HorizontalAlignment="Left" Margin="4,24,0,0" VerticalAlignment="Top"
                   ToolTip="Will attempt to use Thrall in combat. "
                   />
-        <Slider x:Name="ThrallSuperDelay" HorizontalAlignment="Left" Margin="120,49,0,0" Value="{Binding Warlock.SuperDelay}" VerticalAlignment="Top" Maximum="30" Width="114" />
+        <Slider x:Name="ThrallSuperDelay" HorizontalAlignment="Left" Margin="120,49,0,0" Value="{Binding Warlock.SuperDelay}" VerticalAlignment="Top" Maximum="30" Width="114"
+                ToolTip=""
+                />
         <Label x:Name="ThrallSuperDelayLabel" Content="Super Delay" HorizontalAlignment="Left" Margin="28,44,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="ThrallSuperDelayValueLabel" Content="{Binding Warlock.SuperDelay}" HorizontalAlignment="Left" Margin="246,44,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="ThrallSuperDelayValueLabelSeconds" Content="Seconds" HorizontalAlignment="Left" Margin="255,44,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="ThrallSuperDelayValueLabel" Content="{Binding Warlock.SuperDelay}" ContentStringFormat="{}{0} Seconds" HorizontalAlignment="Left" Margin="246,44,0,0" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

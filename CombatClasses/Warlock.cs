@@ -4,10 +4,12 @@ using Buddy.Coroutines;
 using log4net;
 using SuperSaiyan.Settings;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static SuperSaiyan.Utils.Combat;
+using static SuperSaiyan.Utils.Buffs;
 
 namespace SuperSaiyan.CombatClasses
 {
@@ -50,6 +52,7 @@ namespace SuperSaiyan.CombatClasses
         ////    Log.InfoFormat("Found skill: {0} - {1}", x.Id, x.Name);
         ////}
         #endregion
+        private DateTime _thrallTimer = new DateTime();
 
         public async Task Combat()
         {
@@ -69,6 +72,7 @@ namespace SuperSaiyan.CombatClasses
                 }
 
                 //push the badguys away and lock them in place.
+                //TODO: range check.
                 if(await ExecuteSkill("Repulse"))
                 {
                     await ExecuteSkill("Soul Shackle");
@@ -83,12 +87,28 @@ namespace SuperSaiyan.CombatClasses
                 {
                     if(!IsSkillOnCooldown(Thrall) && await ExecuteSkill(Thrall))
                     {
+                        _thrallTimer = DateTime.Now;
                         return;
+                    }
+                    if ((_thrallTimer - DateTime.Now).Seconds > SuperSettings.Instance.Warlock.SuperDelay)
+                    {
+                        var TimeWarp = GameManager.LocalPlayer.GetSkillByName("Time Distortion");
+                        if (TimeWarp != null && !IsSkillOnCooldown(TimeWarp) && !HasDebuf(new List<string> { "Inflection" }) && await ExecuteSkill(TimeWarp))
+                        {
+                            return;
+                        }
+
+                        //TODO: Improve SoulBurn Logic.
+                        var Soulburn = GameManager.LocalPlayer.GetSkillByName("Soulburn");
+                        if (Soulburn != null && !IsSkillOnCooldown(Soulburn) && !HasDebuf(new List<string> { "Soulburn", "Soulburn Unavailable" }) && await ExecuteSkill(Soulburn))
+                        {
+                            return;
+                        }
                     }
                 }
             }
 
-            //todo: is this channeled? & are we still hitting the target.
+            //TODO: is this channeled? & are we still hitting the target.
             if (await ExecuteSkill("Dragon Helix") || await ExecuteSkill("Dragoncall"))
             {
                 return;
@@ -156,6 +176,7 @@ namespace SuperSaiyan.CombatClasses
             {
                 while (GameManager.LocalPlayer.IsCasting)
                 {
+                    //TODO distance check this
                     //Imprison has the raidus of 3 so make sure the target is inside 1.5
                     //need to figure out how position distance compares to spell distance.
                     if (!(center.Distance2D(GameManager.LocalPlayer.CurrentTarget.Position) <= 1.5) )

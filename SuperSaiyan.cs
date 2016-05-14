@@ -92,10 +92,11 @@ namespace SuperSaiyan
             {
                 if (_gui == null)
                 {
+                    var uiPath = Path.Combine(AppSettings.Instance.FullRoutinesPath, "SuperSaiyan", "GUI");
                     _gui = new Window
                     {
                         DataContext = new SuperSettings(),
-                        Content = WPFUtils.LoadWindowContent(Path.Combine(AppSettings.Instance.FullRoutinesPath, "SuperSaiyan", "GUI")),
+                        Content = LoadWindowContent(uiPath),
                         MinHeight = 400,
                         MinWidth = 200,
                         Title = "Super Saiyan Settings",
@@ -135,6 +136,51 @@ namespace SuperSaiyan
                 Log.InfoFormat("context == null");
             }
             _gui = null;
+        }
+
+        /// <summary>
+        /// I need my resource file.
+        /// </summary>
+        /// <param name="uiPath"></param>
+        /// <returns></returns>
+        internal UserControl LoadWindowContent(string uiPath)
+        {
+            try
+            {
+                lock (ContentLock)
+                {
+                    _windowContent = WPFUtils.LoadWindowContent(Path.Combine(uiPath, "MainView.xaml"));
+                    LoadResourceForWindow(Path.Combine(uiPath, "Dictionary.xaml"), _windowContent);
+                    return _windowContent;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.ErrorFormat("Exception loading window content! {0}", ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// load our Resource file that contains styles and magic.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="control"></param>
+        private void LoadResourceForWindow(string filename, UserControl control)
+        {
+            try
+            {
+                ResourceDictionary resource = WPFUtils.LoadAndTransformXamlFile<ResourceDictionary>(filename);
+                foreach (System.Collections.DictionaryEntry res in resource)
+                {
+                    if (!control.Resources.Contains(res.Key))
+                        control.Resources.Add(res.Key, res.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.ErrorFormat("Error loading resources {0}", ex);
+            }
         }
     }
 }
