@@ -6,7 +6,7 @@
                     xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" 
                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:ui="clr-namespace:SuperSaiyan.GUI"
+                    xmlns:ui="clr-namespace:SuperSensei.GUI"
                     xmlns:cc="clr-namespace:CustomControls">
 
     <!-- Base Template Colors -->

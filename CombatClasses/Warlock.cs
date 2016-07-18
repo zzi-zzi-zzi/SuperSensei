@@ -2,16 +2,17 @@
 using Buddy.BladeAndSoul.Game.DataTables;
 using Buddy.Coroutines;
 using log4net;
-using SuperSaiyan.Settings;
+using SuperSensei.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static SuperSaiyan.Utils.Combat;
-using static SuperSaiyan.Utils.Buffs;
+using static SuperSensei.Utils.Combat;
+using static SuperSensei.Utils.Buffs;
+using Buddy.BladeAndSoul.Game.Objects;
 
-namespace SuperSaiyan.CombatClasses
+namespace SuperSensei.CombatClasses
 {
     class Warlock : ICombatHandler
     {
@@ -59,17 +60,19 @@ namespace SuperSaiyan.CombatClasses
             //blocking has the highest priority.
             if (SuperSettings.Instance.Warlock.AttemptQuell)
             {
-                if(GameManager.LocalPlayer.CurrentTarget.CurrentTarget == GameManager.LocalPlayer && GameManager.LocalPlayer.CurrentTarget.IsCasting)
-                {
-                    foreach(var action in GameManager.LocalPlayer.CurrentTarget.CurrentActions)
-                    {
-                        if (action.Target == GameManager.LocalPlayer && action.TimeLeft < TimeSpan.FromMilliseconds(250))
-                        {
-                            if(await ExecuteSkill("Quell"))
-                                return;
-                        }
-                    }
-                }
+				if(GameManager.LocalPlayer.CurrentTarget.GetType() == typeof(Npc))
+                 {
+					var npc = (Npc)GameManager.LocalPlayer.CurrentTarget;
+					if(npc.IsCasting && npc.CurrentTarget == GameManager.LocalPlayer)
+						foreach(var action in npc.CurrentActions)
+	                    {
+	                         if (action.Target == GameManager.LocalPlayer && action.TimeLeft < TimeSpan.FromMilliseconds(250))
+	                         {
+	                             if(await ExecuteSkill("Quell"))
+	                                 return;
+	                         }
+	                    }
+                 }
 
                 //push the badguys away and lock them in place.
                 //TODO: range check.
@@ -120,28 +123,28 @@ namespace SuperSaiyan.CombatClasses
                     if (castResult == SkillUseError.WrongStance)
                     {
                         Log.InfoFormat("Listing Current Player Effects");
-                        foreach (var effect in GameManager.LocalPlayer.Effects)
-                        {
-                            Log.InfoFormat("Effect id: {0} Effect Name: {1}", effect.RecordId, effect.Name);
-                        }
+                        // foreach (var effect in GameManager.LocalPlayer.Effects)
+                        // {
+                        //     Log.InfoFormat("Effect id: {0} Effect Name: {1}", effect.RecordId, effect.Name);
+                        // }
 
-                        Log.InfoFormat("[{2}] Player Stance: {0} Skill Stance: {1}",
-                            GameManager.LocalPlayer.Stance,
-                            DataTables.Skillcastcondition3.GetRecord(skill.Record.CastConditionRecordId).Stance,
-                            skill.Id
-                            );
-                        var skill2 = GameManager.LocalPlayer.Skills28.Find((S) => { return S.Id == 28091; });// GetSkillById(28091);
-                        Log.InfoFormat("[{2}] Player Stance: {0} Skill Stance: {1}",
-                            GameManager.LocalPlayer.Stance,
-                            DataTables.Skillcastcondition3.GetRecord(skill2.Record.CastConditionRecordId).Stance,
-                            skill2.Id
-                            );
-                        skill2 = GameManager.LocalPlayer.Skills28.Find((S) => { return S.Id == 28092; });// GetSkillById(28091);
-                        Log.InfoFormat("[{2}] Player Stance: {0} Skill Stance: {1}",
-                            GameManager.LocalPlayer.Stance,
-                            DataTables.Skillcastcondition3.GetRecord(skill2.Record.CastConditionRecordId).Stance,
-                            skill2.Id
-                            );
+                        // Log.InfoFormat("[{2}] Player Stance: {0} Skill Stance: {1}",
+                        //     GameManager.LocalPlayer.Stance,
+                        //     DataTables.Skillcastcondition3.GetRecord(skill.Record.CastConditionRecordId).Stance,
+                        //     skill.Id
+                        //     );
+                        // var skill2 = GameManager.LocalPlayer.Skills28.Find((S) => { return S.Id == 28091; });// GetSkillById(28091);
+                        // Log.InfoFormat("[{2}] Player Stance: {0} Skill Stance: {1}",
+                        //     GameManager.LocalPlayer.Stance,
+                        //     DataTables.Skillcastcondition3.GetRecord(skill2.Record.CastConditionRecordId).Stance,
+                        //     skill2.Id
+                        //     );
+                        // skill2 = GameManager.LocalPlayer.Skills28.Find((S) => { return S.Id == 28092; });// GetSkillById(28091);
+                        // Log.InfoFormat("[{2}] Player Stance: {0} Skill Stance: {1}",
+                        //     GameManager.LocalPlayer.Stance,
+                        //     DataTables.Skillcastcondition3.GetRecord(skill2.Record.CastConditionRecordId).Stance,
+                        //     skill2.Id
+                        //     );
                     }
                 }
                 catch { }

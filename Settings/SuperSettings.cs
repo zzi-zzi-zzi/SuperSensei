@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
-namespace SuperSaiyan.Settings
+namespace SuperSensei.Settings
 {
     public class SuperSettings : JsonSettings, INotifyPropertyChanged
     {

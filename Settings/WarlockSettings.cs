@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.Serialization;
 
-namespace SuperSaiyan.Settings
+namespace SuperSensei.Settings
 {
     public class WarlockSettings : INotifyPropertyChanged
     {

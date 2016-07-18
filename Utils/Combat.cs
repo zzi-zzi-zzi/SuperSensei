@@ -6,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SuperSaiyan.Utils
+namespace SuperSensei.Utils
 {
     class Combat
     {
@@ -28,6 +28,21 @@ namespace SuperSaiyan.Utils
             return await ExecuteSkill(skill);
             
         }
+		/// <summary>
+		/// Executes the skill by alias.
+		/// </summary>
+		/// <returns>The skill by alias.</returns>
+		/// <param name="alias">Alias.</param>
+		internal static async Task<bool> ExecuteSkillByAlias(string alias)
+		{
+			var skill = GameManager.LocalPlayer.GetSkillByAlias(alias);
+			if (skill == null)
+			{
+				return false;
+			}
+
+			return await ExecuteSkill(skill);
+		}
 
         /// <summary>
         /// handles the actual exxectuion of a skill.
@@ -47,7 +62,7 @@ namespace SuperSaiyan.Utils
 
             Log.InfoFormat("Casting {0}", skill.Name);
             skill.Cast();
-            await Coroutine.Sleep(100);
+            await Coroutine.Sleep(150);
             return true;
         }
 

@@ -19,43 +19,39 @@ using System.Windows.Markup;
 using UserControl = System.Windows.Controls.UserControl;
 using Application = System.Windows.Application;
 using Buddy.BladeAndSoul.ViewModels;
-using SuperSaiyan.Settings;
-using SuperSaiyan.GUI.Components;
+using SuperSensei.Settings;
+using SuperSensei.GUI.Components;
+using SuperSensei.Utils;
 
-namespace SuperSaiyan
+namespace SuperSensei
 {
-    public class SuperSaiyan : CombatRoutineBase, IUIButtonProvider
+    public class SuperSensei : CombatRoutineBase, IUIButtonProvider
     {
         #region IAuthored
         /// <summary>
         ///     The name of this authored object.
         /// </summary>
-        public override string Name { get { return "Super Saiyan By ZZI"; } }
+        public override string Name => "Super Sensei"; 
 
         /// <summary>
         ///     The author of this object.
         /// </summary>
-        public override string Author { get { return "zzi"; } }
+        public override string Author => "zzi";
 
         /// <summary>
         ///     The version of this object implementation.
         /// </summary>
-        public override Version Version { get { return new Version(0, 0, 1); } }
+        public override Version Version => new Version(0, 0, 2); 
 
-        public string ButtonText
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+		public string ButtonText => "Settings";
+
         #endregion
 
-        public SuperSaiyan()
+        public SuperSensei()
         {
         }
 
-        private static ILog Log = LogManager.GetLogger("[Super Saiyan]");
+        private static ILog Log = LogManager.GetLogger("[Super Sensei]");
         private ICombatHandler _combatMachine;
         private Window _gui;
         private UserControl _windowContent;
@@ -72,8 +68,11 @@ namespace SuperSaiyan
                 case PlayerClass.Summoner:
                     _combatMachine = new Summoner();
                     break;
+				case PlayerClass.SoulFighter:
+					_combatMachine = new SoulFighter();
+					break;
                 default:
-                    Log.InfoFormat("[Super Saiyan] cannot handle class: {0} (YET!)", GameManager.LocalPlayer.Class);
+                    Log.InfoFormat("[Super Sensei] cannot handle class: {0} (YET!)", GameManager.LocalPlayer.Class);
                     _combatMachine = null;
                     break;
             }
@@ -88,6 +87,10 @@ namespace SuperSaiyan
                 await _combatMachine.Combat();
             return;
         }
+		public override async Task Rest()
+		{
+			await Looting.Loot();
+		}
 
         public void OnButtonClicked(object sender)
         {
@@ -95,7 +98,7 @@ namespace SuperSaiyan
             {
                 if (_gui == null)
                 {
-                    var uiPath = Path.Combine(AppSettings.Instance.FullRoutinesPath, "SuperSaiyan", "GUI");
+                    var uiPath = Path.Combine(AppSettings.Instance.FullRoutinesPath, "SuperSensei", "GUI");
                     _gui = new Window
                     {
                         DataContext = new SuperSettings(),

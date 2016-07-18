@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SuperSaiyan.Utils
+namespace SuperSensei.Utils
 {
     class Buffs
     {
@@ -22,7 +22,7 @@ namespace SuperSaiyan.Utils
         }
 
 
-        internal static bool HasDebuf(Actor currentTarget, params string[] options)
+        internal static bool HasDebuf(Npc currentTarget, params string[] options)
         {
             return currentTarget.Effects.Where(e => { return options.Contains(e.Name); }).Count() > 0;
         }

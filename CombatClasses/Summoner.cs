@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static SuperSaiyan.Utils.Combat;
-using static SuperSaiyan.Utils.Buffs;
+using static SuperSensei.Utils.Combat;
+using static SuperSensei.Utils.Buffs;
 using Buddy.BladeAndSoul.Game;
+using Buddy.BladeAndSoul.Game.Objects;
 
-namespace SuperSaiyan.CombatClasses
+namespace SuperSensei.CombatClasses
 {
     class Summoner : ICombatHandler
     {
@@ -40,7 +41,9 @@ namespace SuperSaiyan.CombatClasses
 
             //TODO: don't like casting multiple things in a single combat tick. need to find a better way of doing this.
             //TODO: is this really Ivy Poison
-            if (!HasDebuf(GameManager.LocalPlayer.CurrentTarget, "Ivy Poison") && (await ExecuteSkill("Weed Whack") || await ExecuteSkill("Grasping Roots")))
+            if (!HasDebuf((Npc)GameManager.LocalPlayer.CurrentTarget, "Ivy Poison") &&
+                 (await ExecuteSkill("Weed Whack") || await ExecuteSkill("Grasping Roots"))
+               )
             {
                 await ExecuteSkill("Rosethorn"); //get some chi back
                 await ExecuteSkill("Flying Nettles"); //allows us to build up photosyntesis stacks
@@ -48,7 +51,9 @@ namespace SuperSaiyan.CombatClasses
             }
 
             //todo: if we can't cast doom n bloom. have the cat 'graple' the target so we can keep building photo stacks
-            if (!HasDebuf(GameManager.LocalPlayer.CurrentTarget, "Flying Nettles") && !HasDebuf(GameManager.LocalPlayer.CurrentTarget, "Doom 'n' Bloom") && await ExecuteSkill("Doom 'n' Bloom"))
+            if (!HasDebuf((Npc)GameManager.LocalPlayer.CurrentTarget, "Flying Nettles") && 
+                !HasDebuf((Npc)GameManager.LocalPlayer.CurrentTarget, "Doom 'n' Bloom") &&
+                 await ExecuteSkill("Doom 'n' Bloom"))
             {
                 return;
             }
