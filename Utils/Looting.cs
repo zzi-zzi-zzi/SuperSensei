@@ -31,18 +31,19 @@ namespace SuperSensei.Utils
 			{
 				foreach (var a in GameManager.Actors.OfType<ILootable>())
 				{
-	        		LootInfo lootInfo = (a as ILootable)?.LootInfo;
+	        		LootInfo lootInfo = a.LootInfo;
+                    Actor act = a as Actor;
 
 					if (lootInfo != null && lootInfo.IsValid && lootInfo.AvailableLoot.Count > 0)
 					{
-						Log.Info(a.Name + " [" + a.Id.ToString("X16") + "] " + a.Alias + " HasLoot " + lootInfo.HasLoot);
+						Log.Info(act.Name + " [" + act.Id.ToString("X16") + "] " + act.Alias + " HasLoot " + lootInfo.HasLoot);
 
 						foreach (var available in lootInfo.AvailableLoot)
 						{
 							Log.InfoFormat("Item Record {0} Stack Count {1} ItemId {2}", available.ItemRecord.Alias, available.StackCount, available.ItemId);
 						}
 
-						Log.InfoFormat("Lootable {0}  distance {1}", a.Name, a.Distance);
+						Log.InfoFormat("Lootable {0}  distance {1}", act.Name, act.Distance);
 						if (a is EnvironmentObject)
 							await CommonBehaviors.LootActor(a as EnvironmentObject, 2);
 						else

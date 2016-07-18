@@ -4,24 +4,15 @@ using Buddy.BladeAndSoul.Infrastructure;
 using Buddy.BotCommon;
 using Buddy.Engine;
 using log4net;
-using SuperSaiyan.CombatClasses;
 using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Markup;
 using UserControl = System.Windows.Controls.UserControl;
-using Application = System.Windows.Application;
-using Buddy.BladeAndSoul.ViewModels;
 using SuperSensei.Settings;
-using SuperSensei.GUI.Components;
+using SuperSensei.CombatClasses;
 using SuperSensei.Utils;
+using MahApps.Metro.Controls;
 
 namespace SuperSensei
 {
@@ -99,7 +90,7 @@ namespace SuperSensei
                 if (_gui == null)
                 {
                     var uiPath = Path.Combine(AppSettings.Instance.FullRoutinesPath, "SuperSensei", "GUI");
-                    _gui = new Window
+                    _gui = new MetroWindow
                     {
                         DataContext = new SuperSettings(),
                         Content = LoadWindowContent(uiPath),

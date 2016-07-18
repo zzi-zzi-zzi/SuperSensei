@@ -18,7 +18,7 @@ namespace SuperSensei.Settings
         [JsonIgnore]
         internal static SuperSettings Instance { get { return _instance ?? (_instance = new SuperSettings()); } }
 
-        public SuperSettings() : base(GetSettingsFilePath(SettingsPath, "SuperSaiyan.json"))
+        public SuperSettings() : base(GetSettingsFilePath(SettingsPath, "SuperSensei.json"))
         {
         }
 

@@ -2,9 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:ut="clr-namespace:SuperSensei.GUI"
-             mc:Ignorable="d" Foreground="{DynamicResource TextBrush}" Background="#434343"
-             MinHeight="650" MinWidth="550">
+             mc:Ignorable="d" Foreground="{DynamicResource TextBrush}" Background="#434343">
+    <UserControl.Resources>
+        <Style x:Key="MenuLevel2" BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
+            <Setter Property="mah:ControlsHelper.HeaderFontSize" Value="16"></Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <TabControl>
             <TabItem Header="Assassin" Foreground="{DynamicResource TextBrush}">
@@ -42,13 +47,13 @@
                     <Label Content="Nothing to configure yet!" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Soul Fighter" Visibility="Collapsed" Foreground="{DynamicResource TextBrush}">
+            <TabItem Header="Soul Fighter" Foreground="{DynamicResource TextBrush}">
                 <Grid>
                     <Label Content="Nothing to configure yet!" />
                 </Grid>
             </TabItem>
             <TabItem Header="Warlock" Foreground="{DynamicResource TextBrush}">
-                <Border Tag="../CombatSettings/Warlock.xaml"/>
+                <Border Tag="CombatSettings/Warlock.xaml"/>
             </TabItem>
         </TabControl>
     </Grid>
