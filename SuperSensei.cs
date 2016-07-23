@@ -62,6 +62,9 @@ namespace SuperSensei
 				case PlayerClass.SoulFighter:
 					_combatMachine = new SoulFighter();
 					break;
+                case PlayerClass.Assassin:
+                    _combatMachine = new Assassin();
+                    break;
                 default:
                     Log.InfoFormat("[Super Sensei] cannot handle class: {0} (YET!)", GameManager.LocalPlayer.Class);
                     _combatMachine = null;
@@ -82,6 +85,11 @@ namespace SuperSensei
 		{
 			await Looting.Loot();
 		}
+
+        public override async Task Pull(object preferredTarget)
+        {
+            await _combatMachine.Pull(preferredTarget);
+        }
 
         public void OnButtonClicked(object sender)
         {

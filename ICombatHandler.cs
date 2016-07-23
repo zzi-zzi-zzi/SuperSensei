@@ -8,6 +8,8 @@ namespace SuperSensei
 {
     interface ICombatHandler
     {
+        void UpdateRoutine();
         Task Combat();
+        Task Pull(object Target);
     }
 }

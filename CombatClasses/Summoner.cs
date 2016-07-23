@@ -15,6 +15,8 @@ namespace SuperSensei.CombatClasses
     {
         private static ILog Log = LogManager.GetLogger("[Super Saiyan][Summoner]");
 
+        public void UpdateRoutine() { }
+
         /// <summary>
         /// summoner rotation.
         /// currently just does Super Sunflower
@@ -68,6 +70,9 @@ namespace SuperSensei.CombatClasses
 
             return;
         }
-        
+        public async Task Pull(object Target)
+        {
+
+        }
     }
 }

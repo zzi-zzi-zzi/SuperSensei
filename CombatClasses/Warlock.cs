@@ -55,24 +55,26 @@ namespace SuperSensei.CombatClasses
         #endregion
         private DateTime _thrallTimer = new DateTime();
 
+        public void UpdateRoutine() { }
+
         public async Task Combat()
         {
             //blocking has the highest priority.
             if (SuperSettings.Instance.Warlock.AttemptQuell)
             {
-				if(GameManager.LocalPlayer.CurrentTarget.GetType() == typeof(Npc))
-                 {
-					var npc = (Npc)GameManager.LocalPlayer.CurrentTarget;
-					if(npc.IsCasting && npc.CurrentTarget == GameManager.LocalPlayer)
-						foreach(var action in npc.CurrentActions)
-	                    {
-	                         if (action.Target == GameManager.LocalPlayer && action.TimeLeft < TimeSpan.FromMilliseconds(250))
-	                         {
-	                             if(await ExecuteSkill("Quell"))
-	                                 return;
-	                         }
-	                    }
-                 }
+                if (GameManager.LocalPlayer.CurrentTarget.GetType() == typeof(Npc))
+                {
+                    var npc = GameManager.LocalPlayer.CurrentTarget as Npc;
+                    if (npc != null && npc.IsCasting && npc.CurrentTarget == GameManager.LocalPlayer)
+                        foreach (var action in npc.CurrentActions)
+                        {
+                            if (action.Target == GameManager.LocalPlayer && action.TimeLeft < TimeSpan.FromMilliseconds(250))
+                            {
+                                if (await ExecuteSkill("Quell"))
+                                    return;
+                            }
+                        }
+                }
 
                 //push the badguys away and lock them in place.
                 //TODO: range check.
@@ -193,6 +195,11 @@ namespace SuperSensei.CombatClasses
                 return;
             }
             await DefaultSkill();
+        }
+
+        public async Task Pull(object Target)
+        {
+            
         }
 
         async Task DefaultSkill()

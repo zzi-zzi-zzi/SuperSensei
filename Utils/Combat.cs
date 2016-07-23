@@ -1,4 +1,7 @@
 ﻿using Buddy.BladeAndSoul.Game;
+using Buddy.BladeAndSoul.Game.Objects;
+using Buddy.BotCommon;
+using Buddy.Common.Math;
 using Buddy.Coroutines;
 using log4net;
 using System;
@@ -76,5 +79,83 @@ namespace SuperSensei.Utils
             RecycleEntry recycle = skill.GetLocalPlayerRecycleEntry();
             return ((recycle != null) ? new double?(recycle.TimeLeft.TotalMilliseconds) : null) > 0.0;
         }
+
+        internal static bool IsSkillOnCooldown(string alias)
+        {
+            return IsSkillOnCooldown(GameManager.LocalPlayer.GetSkillByAlias(alias));
+        }
+        
+        /// <summary>
+        /// taken from honorbuddy. Moves the character behind the mob. 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        internal static async Task GetBehindUnit(Npc target)
+        {
+            if (target == null)
+                return;
+
+            var posa = CalculatePointBehind(target.Position, target.Facing, 3f);
+            var posb = CalculatePointBehind(target.Position, target.Facing, 2.5f);
+
+
+            await CommonBehaviors.MoveTo( GetNearestPointOnSegment(posa, posb) );
+            target.Face();
+        }
+        
+        /// <summary>
+        /// taken from honorbuddy. This will get the closest point between two points that make a line.
+        /// </summary>
+        /// <param name="segmentStart"></param>
+        /// <param name="segmentEnd"></param>
+        /// <returns></returns>
+        internal static Vector3 GetNearestPointOnSegment(Vector3 segmentStart, Vector3 segmentEnd)
+        {
+            var point = GameManager.LocalPlayer.Position;
+
+            float num = segmentStart.DistanceSqr(segmentEnd);
+            if ((double)num == 0.0)
+            {
+                return segmentStart;
+            }
+            var point1 = point - segmentStart;
+            var point2 = segmentEnd - segmentStart;
+            float num2 = Dot(point1, point2) / num;
+
+            if (num2 < 0f)
+            {
+                return segmentStart;
+            }
+            if (num2 > 1f)
+            {
+                return segmentEnd;
+            }
+            return new Vector3(segmentStart.X + point2.X * num2, segmentStart.Y + point2.Y * num2, segmentStart.Z + point2.Z * num2);
+        }
+
+        internal static float Dot(Vector3 a, Vector3 b)
+        {
+            return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+        }
+
+        internal static Vector3 CalculatePointBehind(Vector3 target, float facingRads, float distanceToTarget)
+        {
+            var targetFacingRadians = NormalizeRadian(facingRads);
+            var pnt = new Vector3((float)Math.Cos(targetFacingRadians), (float)Math.Sin(targetFacingRadians), 0f);
+            return target - pnt * (distanceToTarget * GameConsts.WorldScale);
+        }
+
+        public const float TWO_PI = 6.2831853071795862f;
+
+        // Styx.Helpers.WoWMathHelper
+        public static float NormalizeRadian(float radian)
+        {
+            if (radian < 0f)
+            {
+                return (-((-radian) % TWO_PI) + TWO_PI);
+            }
+            return radian % TWO_PI;
+        }
+
     }
 }

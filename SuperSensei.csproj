@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <BaseIntermediateOutputPath>C:\temp\trash</BaseIntermediateOutputPath>
   </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -73,6 +73,7 @@
     <Compile Include="Settings\WarlockSettings.cs" />
     <Compile Include="SuperSensei.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Buffs.cs" />
     <Compile Include="Utils\Combat.cs" />
     <Compile Include="CombatClasses\SoulFighter.cs" />
     <Compile Include="Utils\Looting.cs" />
